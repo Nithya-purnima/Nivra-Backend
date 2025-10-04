@@ -28,6 +28,7 @@ public class LoginController {
             Map<String,String> res = new HashMap<>();
             res.put("token", "dummy-token"); // can replace with JWT later
             res.put("userType", "consumer");
+            res.put("userId", c.getId().toString()); // ✅ add this
             return res;
         }
 
@@ -37,11 +38,13 @@ public class LoginController {
             Map<String,String> res = new HashMap<>();
             res.put("token", "dummy-token");
             res.put("userType", "ngo");
+            res.put("userId", ngo.getId().toString()); // optional if needed
             return res;
         }
 
         throw new RuntimeException("Invalid credentials");
     }
+
 
     @PostMapping("/seller")
     public Map<String,String> loginSeller(@RequestBody Map<String,String> req) {

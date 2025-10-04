@@ -21,4 +21,8 @@ public class Product {
 
     @Column(name = "image_path")  // map image column properly
     private String imagePath;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
 }

@@ -44,7 +44,7 @@ public class LoginController {
     }
 
     @PostMapping("/seller")
-    public Map<String,String> loginSeller(@RequestBody Map<String,String> req){
+    public Map<String,String> loginSeller(@RequestBody Map<String,String> req) {
         String email = req.get("email");
         String password = req.get("password");
 
@@ -53,6 +53,7 @@ public class LoginController {
             Map<String,String> res = new HashMap<>();
             res.put("token","dummy-token");
             res.put("userType","seller");
+            res.put("userId", s.getId().toString()); // Add this line
             return res;
         }
         throw new RuntimeException("Invalid credentials");

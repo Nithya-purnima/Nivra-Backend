@@ -1,6 +1,5 @@
 package com.example.nivra.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,20 +8,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String title;       // instead of "name"
+    private String category;    // add this field
     private String description;
-    private String category;
-    private double price;
+    private Double price;
+    private Integer quantity;
 
+    @Column(name = "image_path")  // map image column properly
     private String imagePath;
-
-    private boolean ngoDonation;
-
-    @ManyToOne
-    private Seller seller;
 }
-

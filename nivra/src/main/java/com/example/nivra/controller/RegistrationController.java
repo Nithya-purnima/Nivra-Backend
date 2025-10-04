@@ -4,6 +4,7 @@ import com.example.nivra.entity.*;
 import com.example.nivra.repository.*;
 import com.example.nivra.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,16 +36,48 @@ public class RegistrationController {
         consumerRepo.save(c);
         return "Consumer registered";
     }
+//    @PostMapping("/register/ngo")
+//    public ResponseEntity<String> registerNGO(
+//            @RequestParam String orgName,
+//            @RequestParam String email,
+//            @RequestParam String phone,
+//            @RequestParam String address,
+//            @RequestParam String password,
+//            @RequestParam MultipartFile certificate
+//    ) {
+//        try {
+//            NGO ngo = new NGO();
+//            ngo.setOrgName(orgName);
+//            ngo.setEmail(email);
+//            ngo.setPhone(phone);
+//            ngo.setAddress(address);
+//            ngo.setPassword(password);
+//            ngo.setCertificatePath(fileService.saveFile(certificate));
+//
+//            ngoRepo.save(ngo);
+//
+//            return ResponseEntity.ok("NGO registered successfully!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
+//        }
+//    }
+//
+@PostMapping("/ngo")
+public ResponseEntity<String> registerNGO(
+        @RequestParam String orgName,
+        @RequestParam String email,
+        @RequestParam String phone,
+        @RequestParam String address,
+        @RequestParam String password,
+        @RequestParam MultipartFile certificate
+) {
+    try {
+        NGO existingNGO = ngoRepo.findByEmail(email);
+        if (existingNGO != null) {
+            return ResponseEntity.badRequest().body("Email already registered");
+        }
 
-    @PostMapping("/ngo")
-    public String registerNGO(
-            @RequestParam String orgName,
-            @RequestParam String email,
-            @RequestParam String phone,
-            @RequestParam String address,
-            @RequestParam String password,
-            @RequestParam MultipartFile certificate
-    ) throws Exception {
         NGO ngo = new NGO();
         ngo.setOrgName(orgName);
         ngo.setEmail(email);
@@ -52,10 +85,13 @@ public class RegistrationController {
         ngo.setAddress(address);
         ngo.setPassword(password);
         ngo.setCertificatePath(fileService.saveFile(certificate));
-        ngoRepo.save(ngo);
-        return "NGO registered";
-    }
 
+        ngoRepo.save(ngo);
+        return ResponseEntity.ok("NGO registered successfully!");
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
+    }
+}
     @PostMapping("/seller")
     public String registerSeller(
             @RequestParam String name,

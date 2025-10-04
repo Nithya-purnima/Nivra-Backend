@@ -19,4 +19,5 @@ public class NGO {
     private String password;
 
     private String certificatePath; // verification certificate
+
 }
